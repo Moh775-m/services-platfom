@@ -12,11 +12,11 @@ export default function App() {
   const [logoClicks, setLogoClicks] = useState(0)
 
   useEffect(() => {
-    // 1. تحقق من الرابط
+    
     if (window.location.href.includes('hadramout123')) {
       setIsAdmin(true)
       localStorage.setItem('jahiz-admin', 'true')
-      // نظف الرابط بعد التفعيل
+     
       window.history.replaceState({}, '', window.location.pathname)
       alert('✅ تم تفعيل وضع الإدارة')
     } else if (localStorage.getItem('jahiz-admin') === 'true') {
@@ -83,17 +83,17 @@ export default function App() {
 
         <div className="hero">
           <div className="badge" onClick={isAdmin ? logoutAdmin : undefined}>
-            {isAdmin ? '👑 وضع الإدارة مفعل - اضغط للخروج' : '🛡️ منصة حضرموت الأولى'}
+            {isAdmin ? '👑 وضع الإدارة مفعل - اضغط للخروج' : '🛡️ منصة للخدمات في حضرموت '}
           </div>
-          <h1>وسّع رزقك<br /><span>مع منصة جاهز</span><br />دعنا نسهّل شغلك</h1>
+          <h1>أحصل على حاجتك <br /><span>مع منصة جاهز</span><br />دعنا نسهّل شغلك</h1>
           <p>كل خدمات حضرموت في مكان واحد - حرفيين، معدات، سكن، ومتجر.</p>
         </div>
 
         <div className="services">
-          <div className="service-card s1" onClick={() => setActive('craftsmen')}><div className="service-icon">🔧</div><h3>العمال والحرفيين</h3><p>سباك • كهربائي • نجار</p></div>
-          <div className="service-card s2" onClick={() => setActive('equipment')}><div className="service-icon">🚜</div><h3>إيجار المعدات</h3><p>شيول • قلاب • دريل</p></div>
-          <div className="service-card s3" onClick={() => setActive('houses')}><div className="service-icon">🏠</div><h3>إيجار السكن</h3><p>شقق • بيوت • محلات</p></div>
-          <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث</p></div>
+          <div className="service-card s1" onClick={() => setActive('craftsmen')}><div className="service-icon">🔧</div><h3>العمال والحرفيين</h3><p>سباك • كهربائي • نجار...</p></div>
+          <div className="service-card s2" onClick={() => setActive('equipment')}><div className="service-icon">🚜</div><h3>إيجار المعدات</h3><p>شيول • قلاب • دريل ....</p></div>
+          <div className="service-card s3" onClick={() => setActive('houses')}><div className="service-icon">🏠</div><h3>إيجار السكن</h3><p>شقق • بيوت • محلات ...</p></div>
+          <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث ....</p></div>
         </div>
       </div>
     </>
