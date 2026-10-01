@@ -11,12 +11,13 @@ export default function App() {
   const [dark, setDark] = useState(false)
   const [logoClicks, setLogoClicks] = useState(0)
 
+  // كلمة السر الآن من ملف .env المخفي
+  const ADMIN_CODE = import.meta.env.VITE_ADMIN_PASSWORD
+
   useEffect(() => {
-    
-    if (window.location.href.includes('hadramout123')) {
+    if (ADMIN_CODE && window.location.href.includes(ADMIN_CODE)) {
       setIsAdmin(true)
       localStorage.setItem('jahiz-admin', 'true')
-     
       window.history.replaceState({}, '', window.location.pathname)
       alert('✅ تم تفعيل وضع الإدارة')
     } else if (localStorage.getItem('jahiz-admin') === 'true') {
@@ -32,7 +33,7 @@ export default function App() {
     setLogoClicks(newCount)
     if (newCount === 5) {
       const pass = prompt('أدخل كود الإدارة:')
-      if (pass === 'hadramout123') {
+      if (pass === ADMIN_CODE) {
         setIsAdmin(true)
         localStorage.setItem('jahiz-admin', 'true')
         alert('✅ تم تفعيل الإدارة')
