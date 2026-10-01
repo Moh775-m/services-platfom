@@ -10,8 +10,9 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [dark, setDark] = useState(false)
   const [logoClicks, setLogoClicks] = useState(0)
+  const [showAdminLogin, setShowAdminLogin] = useState(false)
+  const [adminPassInput, setAdminPassInput] = useState('')
 
-  // كلمة السر الآن من ملف .env المخفي
   const ADMIN_CODE = import.meta.env.VITE_ADMIN_PASSWORD
 
   useEffect(() => {
@@ -23,7 +24,6 @@ export default function App() {
     } else if (localStorage.getItem('jahiz-admin') === 'true') {
       setIsAdmin(true)
     }
-
     const saved = localStorage.getItem('jahiz-dark')
     if (saved === 'true') setDark(true)
   }, [])
@@ -32,17 +32,22 @@ export default function App() {
     const newCount = logoClicks + 1
     setLogoClicks(newCount)
     if (newCount === 5) {
-      const pass = prompt('أدخل كود الإدارة:')
-      if (pass === ADMIN_CODE) {
-        setIsAdmin(true)
-        localStorage.setItem('jahiz-admin', 'true')
-        alert('✅ تم تفعيل الإدارة')
-      } else {
-        alert('❌ الكود خطأ')
-      }
+      setShowAdminLogin(true)
       setLogoClicks(0)
     }
     setTimeout(() => setLogoClicks(0), 3000)
+  }
+
+  const checkAdminLogin = () => {
+    if (adminPassInput === ADMIN_CODE) {
+      setIsAdmin(true)
+      localStorage.setItem('jahiz-admin', 'true')
+      setShowAdminLogin(false)
+      setAdminPassInput('')
+      alert('✅ تم تفعيل الإدارة')
+    } else {
+      alert('❌ الكود خطأ')
+    }
   }
 
   const logoutAdmin = () => {
@@ -97,6 +102,26 @@ export default function App() {
           <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث ....</p></div>
         </div>
       </div>
+
+      {showAdminLogin && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div style={{ background: 'white', padding: 24, borderRadius: 16, width: '90%', maxWidth: 350, fontFamily: 'Tajawal' }}>
+            <h3 style={{ margin: 0, marginBottom: 12 }}>🔐 دخول الإدارة</h3>
+            <input
+              type="password"
+              value={adminPassInput}
+              onChange={(e) => setAdminPassInput(e.target.value)}
+              placeholder="أدخل كود الإدارة"
+              style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid #ddd', marginBottom: 12, boxSizing: 'border-box' }}
+              autoFocus
+            />
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={checkAdminLogin} style={{ flex: 1, background: '#111', color: 'white', padding: 10, borderRadius: 8, border: 'none', fontWeight: 700, cursor: 'pointer' }}>دخول</button>
+              <button onClick={() => setShowAdminLogin(false)} style={{ flex: 1, background: '#eee', color: '#111', padding: 10, borderRadius: 8, border: 'none', fontWeight: 700, cursor: 'pointer' }}>إلغاء</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
