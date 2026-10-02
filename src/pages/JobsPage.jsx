@@ -10,12 +10,20 @@ export default function JobsPage({ isAdmin, dark }) {
   const [filter, setFilter] = useState('الكل')
   const [showAdd, setShowAdd] = useState(false)
   const [showApply, setShowApply] = useState(null)
-
+  
   useEffect(() => { fetchJobs() }, [])
   const fetchJobs = async () => {
     const { data } = await supabase.from('jobs').select('*').order('created_at', {ascending: false})
     setJobs(data || [])
   }
+
+  const handleDelete = async (id) => {
+    if (!confirm("متأكد من حذف هذه الوظيفة؟")) return;
+    const { error } = await supabase.from('jobs').delete().eq('id', id);
+    if (error) alert(error.message);
+    else setJobs(jobs.filter(j => j.id !== id));
+  }
+
   const filters = ['الكل','المكلا','الشحر','سيئون','دوام كامل','عن بعد']
   const filtered = jobs.filter(j => {
     const s = (j.title + j.company_name).toLowerCase().includes(search.toLowerCase())
@@ -52,7 +60,10 @@ export default function JobsPage({ isAdmin, dark }) {
             <div className="job-desc">{job.description}</div>
             {job.salary && <div className="job-salary">{job.salary}</div>}
             <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
-               <button onClick={() => setShowApply(job)} className="btn-apply" style={{ flex: 1 }}>التقديم على الوضيفة</button>
+               <button onClick={() => setShowApply(job)} className="btn-apply" style={{ flex: 1 }}>التقديم على الوظيفة</button>
+               {isAdmin && (
+                 <button onClick={() => handleDelete(job.id)} style={{ background:'#fee2e2', color:'#ef4444', border:'none', padding:'8px 12px', borderRadius:8, cursor:'pointer', fontWeight:'bold' }}>🗑️</button>
+               )}
             </div>
           </div>
         ))}
@@ -89,7 +100,6 @@ function ApplyModal({ job, onClose }) {
   const [applicant, setApplicant] = useState({ name:'', phone:'', experience:'' })
   const handleApply = async (e) => {
     e.preventDefault()
-    // 1- حفظ الطلب في جدول orders
     await supabase.from('orders').insert([{
       service_type: 'jobs',
       service_id: String(job.id),
@@ -100,7 +110,6 @@ function ApplyModal({ job, onClose }) {
       description: `تقديم على وظيفة ${job.title} - خبرتي: ${applicant.experience}`,
       status: 'جديد'
     }])
-    // 2- فتح واتساب
     const message = `مرحبا، أريد التقديم على وظيفة: *${job.title}* في *${job.company_name}*%0A%0A*اسمي:* ${applicant.name}%0A*رقمي:* ${applicant.phone}%0A*خبرتي:* ${applicant.experience}%0A%0Aمن منصة جاهز`
     window.open(`https://wa.me/${job.whatsapp_number}?text=${message}`, '_blank')
     onClose()

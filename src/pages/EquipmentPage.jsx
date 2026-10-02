@@ -3,20 +3,78 @@ import { supabase } from '../supabase.js'
 import OrderButton from '../components/OrderButton.jsx'
 import AdminOrders from '../components/AdminOrders.jsx'
 import './EquipmentPage.css'
+
 const TYPES = ['الكل', 'شيول', 'قلاب', 'دريل', 'خلاطة', 'وايت ماء', 'ماطور', 'سقالات']
 const CITIES = ['الكل', 'المكلا', 'الشحر', 'سيئون', 'غيل باوزير']
+
 export default function EquipmentPage({ isAdmin, dark }) {
-    const [items, setItems] = useState([]); const [search, setSearch] = useState(''); const [typeFilter, setTypeFilter] = useState('الكل'); const [cityFilter, setCityFilter] = useState('الكل'); const [showForm, setShowForm] = useState(false); const [form, setForm] = useState({ name: '', type: 'شيول', city: 'المكلا', price: '', whatsapp: '', description: '' })
-    const fetchData = async () => { const { data } = await supabase.from('equipment').select('*').order('created_at', { ascending: false }); setItems(data || []) }
+    const [items, setItems] = useState([]);
+    const [search, setSearch] = useState('');
+    const [typeFilter, setTypeFilter] = useState('الكل');
+    const [cityFilter, setCityFilter] = useState('الكل');
+    const [showForm, setShowForm] = useState(false);
+    const [form, setForm] = useState({ name: '', type: 'شيول', city: 'المكلا', price: '', whatsapp: '', description: '' })
+
+    const fetchData = async () => {
+      const { data } = await supabase.from('equipment').select('*').order('created_at', { ascending: false });
+      setItems(data || [])
+    }
     useEffect(() => { fetchData() }, [])
-    const handleAdd = async (e) => { e.preventDefault(); const { error } = await supabase.from('equipment').insert([form]); if (error) alert(error.message); else { setShowForm(false); fetchData() } }
-    const handleDelete = async (id) => { if (!confirm('تحذف؟')) return; await supabase.from('equipment').delete().eq('id', id); fetchData() }
+
+    const handleAdd = async (e) => {
+      e.preventDefault();
+      const { error } = await supabase.from('equipment').insert([form]);
+      if (error) alert(error.message);
+      else { setShowForm(false); fetchData() }
+    }
+
+    const handleDelete = async (id) => {
+      if (!confirm("متأكد من حذف هذه المعدة؟")) return;
+      const { error } = await supabase.from('equipment').delete().eq('id', id);
+      if (error) alert(error.message);
+      else setItems(prev => prev.filter(c => c.id!== id));
+    }
+
     const filtered = items.filter(c => c.name?.toLowerCase().includes(search.toLowerCase()) && (typeFilter === 'الكل' || c.type === typeFilter) && (cityFilter === 'الكل' || c.city === cityFilter))
-    return (<div className="page" style={{ background: dark ? '#121212' : 'transparent', padding: 16 }}><div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div className="header"><div className="header-left"><div className="header-icon" style={{ background: '#f97316' }}>🚜</div><div><div style={{ fontWeight: 900, color: dark ? 'white' : '#111' }}>المعدات {isAdmin && '👑'}</div><div style={{ fontSize: 12, color: '#888' }}>{items.length} معدة</div></div></div><div style={{ display: 'flex', gap: 8 }}>{isAdmin && <AdminOrders service_type="equipment" dark={dark} />}<button onClick={() => setShowForm(!showForm)} style={{ background: '#f97316', color: 'white', padding: '8px 16px', borderRadius: 999, border: 'none', fontWeight: 'bold' }}> اضف عدتك</button></div></div>
-        <div className="filter-bar"><input value={search} onChange={e => setSearch(e.target.value)} placeholder="ابحث..." /><div className="filter-btns">{TYPES.map(t => <button key={t} onClick={() => setTypeFilter(t)} className={typeFilter === t ? 'active' : ''} style={typeFilter === t ? { background: '#f97316', color: 'white', borderColor: '#f97316' } : {}}>{t}</button>)}</div></div>
-        {showForm && <form onSubmit={handleAdd} className="form-box"><input placeholder="اسمك" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required /><select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}>{TYPES.slice(1).map(t => <option key={t}>{t}</option>)}</select><select value={form.city} onChange={e => setForm({ ...form, city: e.target.value })}>{CITIES.slice(1).map(c => <option key={c}>{c}</option>)}</select><input placeholder="سعر اليوم" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} /><input placeholder="واتساب" value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })} required /><textarea placeholder="وصف" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}></textarea><button className="submit" style={{ background: '#f97316' }}>نشر</button></form>}
-        <div className="grid">{filtered.map(c => <div key={c.id} className="card" style={{ background: dark ? '#1e1e1e' : 'white', border: dark ? '1px solid #333' : '1px solid #eee' }}>{isAdmin && <button onClick={() => handleDelete(c.id)} className="delete-btn">✕</button>}<div style={{ fontWeight: 'bold', color: dark ? 'white' : '#111' }}>{c.name}</div><div style={{ fontSize: 13, color: '#666' }}>{c.type} • {c.city}</div><div className="price" style={{ color: '#f97316' }}>{c.price || 'على الاتفاق'}</div><div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
-           <OrderButton item={c} service_type="equipment" /></div></div>)}</div>
-    </div></div>)
+
+    return (
+    <div className="page" style={{ background: dark? '#121212' : 'transparent', padding: 16 }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="header">
+          <div className="header-left">
+            <div className="header-icon" style={{ background: '#f97316' }}>🚜</div>
+            <div>
+              <div style={{ fontWeight: 900, color: dark? 'white' : '#111' }}>المعدات {isAdmin && '👑'}</div>
+              <div style={{ fontSize: 12, color: '#888' }}>{items.length} معدة</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {isAdmin && <AdminOrders service_type="equipment" dark={dark} />}
+            <button onClick={() => setShowForm(!showForm)} style={{ background: '#f97316', color: 'white', padding: '8px 16px', borderRadius: 999, border: 'none', fontWeight: 'bold' }}> اضف عدتك</button>
+          </div>
+        </div>
+
+        <div className="filter-bar">
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="ابحث..." />
+          <div className="filter-btns">{TYPES.map(t => <button key={t} onClick={() => setTypeFilter(t)} className={typeFilter === t? 'active' : ''} style={typeFilter === t? { background: '#f97316', color: 'white', borderColor: '#f97316' } : {}}>{t}</button>)}</div>
+        </div>
+
+        {showForm && <form onSubmit={handleAdd} className="form-box"><input placeholder="اسمك" value={form.name} onChange={e => setForm({...form, name: e.target.value })} required /><select value={form.type} onChange={e => setForm({...form, type: e.target.value })}>{TYPES.slice(1).map(t => <option key={t}>{t}</option>)}</select><select value={form.city} onChange={e => setForm({...form, city: e.target.value })}>{CITIES.slice(1).map(c => <option key={c}>{c}</option>)}</select><input placeholder="سعر اليوم" value={form.price} onChange={e => setForm({...form, price: e.target.value })} /><input placeholder="واتساب" value={form.whatsapp} onChange={e => setForm({...form, whatsapp: e.target.value })} required /><textarea placeholder="وصف" value={form.description} onChange={e => setForm({...form, description: e.target.value })}></textarea><button className="submit" style={{ background: '#f97316' }}>نشر</button></form>}
+
+        <div className="grid">
+          {filtered.map(c =>
+            <div key={c.id} className="card" style={{ background: dark? '#1e1e1e' : 'white', border: dark? '1px solid #333' : '1px solid #eee', position:'relative' }}>
+              {isAdmin && <button onClick={() => handleDelete(c.id)} style={{ position:'absolute', top:8, left:8, background:'#fee2e2', color:'#ef4444', border:'none', width:28, height:28, borderRadius:8, cursor:'pointer', fontWeight:'bold' }}>🗑️</button>}
+              <div style={{ fontWeight: 'bold', color: dark? 'white' : '#111' }}>{c.name}</div>
+              <div style={{ fontSize: 13, color: '#666' }}>{c.type} • {c.city}</div>
+              <div className="price" style={{ color: '#f97316' }}>{c.price || 'على الاتفاق'}</div>
+              <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
+                <OrderButton item={c} service_type="equipment" />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+    )
 }

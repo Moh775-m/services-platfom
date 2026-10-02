@@ -4,6 +4,8 @@ import EquipmentPage from './pages/EquipmentPage.jsx'
 import HousesPage from './pages/HousesPage.jsx'
 import ProductsPage from './pages/ProductsPage.jsx'
 import JobsPage from './pages/JobsPage.jsx'
+import Pools from './pages/Pools.jsx'
+import AddPool from './pages/AddPool.jsx'
 import './App.css'
 
 export default function App() {
@@ -64,29 +66,19 @@ export default function App() {
     localStorage.setItem('jahiz-dark', newVal)
   }
 
-  const backButtonStyle = {
-    margin: 14,
-    background: dark ? '#2a2a2a' : '#f3f1ef',
-    color: dark ? '#ccc' : '#555',
-    padding: '8px 18px',
-    borderRadius: 999,
-    border: `1px solid ${dark ? '#333' : '#e8e5e1'}`,
-    fontWeight: 600,
-    cursor: 'pointer',
-    fontFamily: 'Tajawal',
-    fontSize: '14px',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '6px'
-  }
-
+  // هيدر داخلي منسق لكل الصفحات
   if (active) return (
-    <div style={{ background: dark ? '#121212' : '#fbfaf9', minHeight: '100vh' }} className={dark ? 'dark-mode page dark' : 'page light'}>
-      <div className="sticky-home-header">
-        <button onClick={() => setActive(null)} style={backButtonStyle}>
-          <span>🏠</span> الرئيسية
-        </button>
-        <div className="nav-btn" onClick={toggleDark} style={{marginRight: 'auto', marginLeft: 14}}>{dark ? '☀️' : '🌙'}</div>
+    <div style={{ background: dark? '#121212' : '#fbfaf9', minHeight: '100vh' }} className={dark? 'dark-mode page dark' : 'page light'}>
+      <div className="sticky-home-header-new">
+        <div className="sticky-inner">
+          <button onClick={() => setActive(null)} className="home-btn-new">
+            🏠 الرئيسية
+          </button>
+          <div className="header-actions">
+            {isAdmin && <span className="admin-badge">👑 مدير</span>}
+            <button onClick={toggleDark} className="theme-btn-new">{dark? '☀️' : '🌙'}</button>
+          </div>
+        </div>
       </div>
 
       {active === 'craftsmen' && <CraftsmenPage isAdmin={isAdmin} dark={dark} />}
@@ -94,37 +86,40 @@ export default function App() {
       {active === 'houses' && <HousesPage isAdmin={isAdmin} dark={dark} />}
       {active === 'products' && <ProductsPage isAdmin={isAdmin} dark={dark} />}
       {active === 'jobs' && <JobsPage isAdmin={isAdmin} dark={dark} />}
+      {active === 'pools' && <Pools isAdmin={isAdmin} dark={dark} setActive={setActive} />}
+      {active === 'pools-add' && <AddPool isAdmin={isAdmin} dark={dark} setActive={setActive} />}
     </div>
   )
 
   return (
     <>
-      <div className={`page ${dark ? 'dark' : 'light'}`}>
+      <div className={`page ${dark? 'dark' : 'light'}`}>
         <div className="navbar">
           <div className="logo" onClick={handleLogoClick} title="اضغط 5 مرات للتفعيل">
             <div className="logo-icon">جـ</div> جاهز
             {isAdmin && <span style={{ fontSize: 12, background: '#f59e0b', color: 'white', padding: '3px 8px', borderRadius: 999, marginRight: 6 }}>مدير</span>}
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <div className="nav-btn" onClick={toggleDark}>{dark ? '☀️' : '🌙'}</div>
+            <div className="nav-btn" onClick={toggleDark}>{dark? '☀️' : '🌙'}</div>
             <div className="nav-btn">☰</div>
           </div>
         </div>
 
         <div className="hero">
-          <div className="badge" onClick={isAdmin ? logoutAdmin : undefined}>
-            {isAdmin ? '👑 وضع الإدارة مفعل - اضغط للخروج' : '🛡️ منصة للخدمات في حضرموت '}
+          <div className="badge" onClick={isAdmin? logoutAdmin : undefined}>
+            {isAdmin? '👑 وضع الإدارة مفعل - اضغط للخروج' : '🛡️ منصة للخدمات في حضرموت '}
           </div>
           <h1>أحصل على حاجتك <br /><span>مع منصة جاهز</span><br />دعنا نسهّل شغلك</h1>
-          <p>كل خدمات حضرموت في مكان واحد - حرفيين، معدات، سكن ، متجر ، وظائف .</p>
+          <p>معظم الخدمات  في مكان واحد - حرفيين، معدات، سكن ، متجر ، مسابح ، وظائف.</p>
         </div>
 
         <div className="services">
           <div className="service-card s1" onClick={() => setActive('craftsmen')}><div className="service-icon">🔧</div><h3>العمال والحرفيين</h3><p>سباك • كهربائي • نجار...</p></div>
-          <div className="service-card s2" onClick={() => setActive('equipment')}><div className="service-icon">🚜</div><h3>إيجار المعدات</h3><p>شيول • قلاب • دريل ....</p></div>
-          <div className="service-card s3" onClick={() => setActive('houses')}><div className="service-icon">🏠</div><h3>إيجار السكن</h3><p>شقق • بيوت • محلات ...</p></div>
-          <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث ....</p></div>
+          <div className="service-card s2" onClick={() => setActive('equipment')}><div className="service-icon">🚜</div><h3>إيجار المعدات</h3><p>شيول • قلاب • دريل....</p></div>
+          <div className="service-card s3" onClick={() => setActive('houses')}><div className="service-icon">🏠</div><h3>إيجار السكن</h3><p>شقق • بيوت • محلات...</p></div>
+          <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث....</p></div>
           <div className="service-card s5" onClick={() => setActive('jobs')}><div className="service-icon">💼</div><h3>وظائف حضرموت</h3><p>وظائف • تقديم مباشر...</p></div>
+          <div className="service-card s6" style={{background:'#e0f2fe'}} onClick={() => setActive('pools')}><div className="service-icon">🏊</div><h3>حجز المسابح</h3><p>مسابح • بالساعة • عائلية...</p></div>
         </div>
       </div>
 

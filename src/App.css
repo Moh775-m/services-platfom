@@ -348,3 +348,45 @@
 .page.dark .service-card.s5 p {
   color: #eee !important;
 }
+/* هيدر داخلي منسق جديد */
+.sticky-home-header-new {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #eee;
+  padding: 8px 16px;
+}
+.dark .sticky-home-header-new {
+  background: rgba(18,18,18,0.85);
+  border-color: #222;
+}
+.sticky-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.home-btn-new {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-family: Tajawal;
+  cursor: pointer;
+  font-size: 13px;
+}
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.theme-btn-new {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  background: white;
+  cursor: pointer;
+}
+.admin-badge { font-size: 11px; background: #f59e0b; color: white; padding: 4px 8px; border-radius: 999px; }
