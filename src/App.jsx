@@ -3,6 +3,7 @@ import CraftsmenPage from './pages/CraftsmenPage.jsx'
 import EquipmentPage from './pages/EquipmentPage.jsx'
 import HousesPage from './pages/HousesPage.jsx'
 import ProductsPage from './pages/ProductsPage.jsx'
+import JobsPage from './pages/JobsPage.jsx'
 import './App.css'
 
 export default function App() {
@@ -63,13 +64,36 @@ export default function App() {
     localStorage.setItem('jahiz-dark', newVal)
   }
 
+  const backButtonStyle = {
+    margin: 14,
+    background: dark ? '#2a2a2a' : '#f3f1ef',
+    color: dark ? '#ccc' : '#555',
+    padding: '8px 18px',
+    borderRadius: 999,
+    border: `1px solid ${dark ? '#333' : '#e8e5e1'}`,
+    fontWeight: 600,
+    cursor: 'pointer',
+    fontFamily: 'Tajawal',
+    fontSize: '14px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px'
+  }
+
   if (active) return (
-    <div style={{ background: dark ? '#121212' : '#fbfaf9', minHeight: '100vh' }}>
-      <button onClick={() => setActive(null)} style={{ margin: 14, background: dark ? '#222' : 'white', color: dark ? 'white' : '#111', padding: '10px 20px', borderRadius: 999, border: `1px solid ${dark ? '#333' : '#eee'}`, fontWeight: 700, cursor: 'pointer', fontFamily: 'Tajawal' }}>← الرئيسية</button>
-      {active === 'craftsmen' && <CraftsmenPage isAdmin={isAdmin} />}
-      {active === 'equipment' && <EquipmentPage isAdmin={isAdmin} />}
-      {active === 'houses' && <HousesPage isAdmin={isAdmin} />}
-      {active === 'products' && <ProductsPage isAdmin={isAdmin} />}
+    <div style={{ background: dark ? '#121212' : '#fbfaf9', minHeight: '100vh' }} className={dark ? 'dark-mode page dark' : 'page light'}>
+      <div className="sticky-home-header">
+        <button onClick={() => setActive(null)} style={backButtonStyle}>
+          <span>🏠</span> الرئيسية
+        </button>
+        <div className="nav-btn" onClick={toggleDark} style={{marginRight: 'auto', marginLeft: 14}}>{dark ? '☀️' : '🌙'}</div>
+      </div>
+
+      {active === 'craftsmen' && <CraftsmenPage isAdmin={isAdmin} dark={dark} />}
+      {active === 'equipment' && <EquipmentPage isAdmin={isAdmin} dark={dark} />}
+      {active === 'houses' && <HousesPage isAdmin={isAdmin} dark={dark} />}
+      {active === 'products' && <ProductsPage isAdmin={isAdmin} dark={dark} />}
+      {active === 'jobs' && <JobsPage isAdmin={isAdmin} dark={dark} />}
     </div>
   )
 
@@ -92,7 +116,7 @@ export default function App() {
             {isAdmin ? '👑 وضع الإدارة مفعل - اضغط للخروج' : '🛡️ منصة للخدمات في حضرموت '}
           </div>
           <h1>أحصل على حاجتك <br /><span>مع منصة جاهز</span><br />دعنا نسهّل شغلك</h1>
-          <p>كل خدمات حضرموت في مكان واحد - حرفيين، معدات، سكن، ومتجر.</p>
+          <p>كل خدمات حضرموت في مكان واحد - حرفيين، معدات، سكن ، متجر ، وظائف .</p>
         </div>
 
         <div className="services">
@@ -100,6 +124,7 @@ export default function App() {
           <div className="service-card s2" onClick={() => setActive('equipment')}><div className="service-icon">🚜</div><h3>إيجار المعدات</h3><p>شيول • قلاب • دريل ....</p></div>
           <div className="service-card s3" onClick={() => setActive('houses')}><div className="service-icon">🏠</div><h3>إيجار السكن</h3><p>شقق • بيوت • محلات ...</p></div>
           <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث ....</p></div>
+          <div className="service-card s5" onClick={() => setActive('jobs')}><div className="service-icon">💼</div><h3>وظائف حضرموت</h3><p>وظائف • تقديم مباشر...</p></div>
         </div>
       </div>
 
@@ -107,14 +132,7 @@ export default function App() {
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
           <div style={{ background: 'white', padding: 24, borderRadius: 16, width: '90%', maxWidth: 350, fontFamily: 'Tajawal' }}>
             <h3 style={{ margin: 0, marginBottom: 12 }}>🔐 دخول الإدارة</h3>
-            <input
-              type="password"
-              value={adminPassInput}
-              onChange={(e) => setAdminPassInput(e.target.value)}
-              placeholder="أدخل كود الإدارة"
-              style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid #ddd', marginBottom: 12, boxSizing: 'border-box' }}
-              autoFocus
-            />
+            <input type="password" value={adminPassInput} onChange={(e) => setAdminPassInput(e.target.value)} placeholder="أدخل كود الإدارة" style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid #ddd', marginBottom: 12, boxSizing: 'border-box' }} autoFocus />
             <div style={{ display: 'flex', gap: 8 }}>
               <button onClick={checkAdminLogin} style={{ flex: 1, background: '#111', color: 'white', padding: 10, borderRadius: 8, border: 'none', fontWeight: 700, cursor: 'pointer' }}>دخول</button>
               <button onClick={() => setShowAdminLogin(false)} style={{ flex: 1, background: '#eee', color: '#111', padding: 10, borderRadius: 8, border: 'none', fontWeight: 700, cursor: 'pointer' }}>إلغاء</button>

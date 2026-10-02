@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../supabase.js'
+import OrderButton from '../components/OrderButton.jsx'
+import AdminOrders from '../components/AdminOrders.jsx'
 import './CraftsmenPage.css'
 const CRAFTS = ['الكل', 'سباك', 'كهربائي', 'نجار', 'حداد', 'مبلط', 'دهان', 'مكيفات']
 const CITIES = ['الكل', 'المكلا', 'الشحر', 'سيئون', 'غيل باوزير', 'فوة']
-export default function CraftsmenPage({ isAdmin }) {
+export default function CraftsmenPage({ isAdmin, dark }) {
     const [items, setItems] = useState([]); const [search, setSearch] = useState(''); const [craftFilter, setCraftFilter] = useState('الكل'); const [cityFilter, setCityFilter] = useState('الكل'); const [showForm, setShowForm] = useState(false); const [form, setForm] = useState({ name: '', craft: 'سباك', city: 'المكلا', experience: '', whatsapp: '' })
     const fetchData = async () => { const { data } = await supabase.from('craftsmen').select('*').order('created_at', { ascending: false }); setItems(data || []) }
     useEffect(() => { fetchData() }, [])
     const handleAdd = async (e) => { e.preventDefault(); const { error } = await supabase.from('craftsmen').insert([form]); if (error) alert(error.message); else { setShowForm(false); fetchData(); setForm({ name: '', craft: 'سباك', city: 'المكلا', experience: '', whatsapp: '' }) } }
     const handleDelete = async (id) => { if (!confirm('تحذف؟')) return; await supabase.from('craftsmen').delete().eq('id', id); fetchData() }
     const filtered = items.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) && (craftFilter === 'الكل' || c.craft === craftFilter) && (cityFilter === 'الكل' || c.city === cityFilter))
-    return (<div className="page"><div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div className="header"><div className="header-left"><div className="header-icon" style={{ background: '#111' }}>🔧</div><div><div style={{ fontWeight: 900 }}>الحرفيين {isAdmin && '👑'}</div><div style={{ fontSize: 12, color: '#888' }}>{items.length} حرفي</div></div></div><button onClick={() => setShowForm(!showForm)} style={{ background: '#111', color: 'white', padding: '8px 16px', borderRadius: 999, border: 'none', fontWeight: 'bold' }}>سجل كعامل</button></div>
+    return (<div className="page" style={{ background: dark ? '#121212' : 'transparent', padding: 16 }}><div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="header"><div className="header-left"><div className="header-icon" style={{ background: '#111' }}>🔧</div><div><div style={{ fontWeight: 900, color: dark ? 'white' : '#111' }}>الحرفيين {isAdmin && '👑'}</div><div style={{ fontSize: 12, color: '#888' }}>{items.length} حرفي</div></div></div><div style={{ display: 'flex', gap: 8 }}>{isAdmin && <AdminOrders service_type="craftsmen" dark={dark} />}<button onClick={() => setShowForm(!showForm)} style={{ background: '#111', color: 'white', padding: '8px 16px', borderRadius: 999, border: 'none', fontWeight: 'bold' }}>سجل كعامل</button></div></div>
         <div className="filter-bar"><input value={search} onChange={e => setSearch(e.target.value)} placeholder="ابحث..." /><div className="filter-btns">{CRAFTS.map(c => <button key={c} onClick={() => setCraftFilter(c)} className={craftFilter === c ? 'active' : ''}>{c}</button>)}</div><div className="filter-btns" style={{ marginTop: 8 }}>{CITIES.map(c => <button key={c} onClick={() => setCityFilter(c)} className={cityFilter === c ? 'active' : ''}>{c}</button>)}</div></div>
         {showForm && <form onSubmit={handleAdd} className="form-box"><input placeholder="اسمك" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required /><select value={form.craft} onChange={e => setForm({ ...form, craft: e.target.value })}>{CRAFTS.slice(1).map(t => <option key={t}>{t}</option>)}</select><select value={form.city} onChange={e => setForm({ ...form, city: e.target.value })}>{CITIES.slice(1).map(c => <option key={c}>{c}</option>)}</select><input placeholder="خبرة" value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} /><input placeholder="واتساب" value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })} required /><button className="submit">نشر</button></form>}
-        <div className="grid">{filtered.map(c => <div key={c.id} className="card">{isAdmin && <button onClick={() => handleDelete(c.id)} className="delete-btn">✕</button>}<div style={{ fontWeight: 'bold' }}>{c.name}</div><div style={{ fontSize: 13, color: '#666' }}>{c.craft} • {c.city} • {c.experience}</div><a href={`https://wa.me/967${c.whatsapp?.replace(/^0/, '')}`} target="_blank" className="whatsapp-btn">واتساب</a></div>)}</div>
+        <div className="grid">{filtered.map(c => <div key={c.id} className="card" style={{ background: dark ? '#1e1e1e' : 'white', border: dark ? '1px solid #333' : '1px solid #eee' }}>{isAdmin && <button onClick={() => handleDelete(c.id)} className="delete-btn">✕</button>}<div style={{ fontWeight: 'bold', color: dark ? 'white' : '#111' }}>{c.name}</div><div style={{ fontSize: 13, color: '#666' }}>{c.craft} • {c.city} • {c.experience}</div><div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
+        <OrderButton item={c} service_type="craftsmen" /></div></div>)}</div>
     </div></div>)
 }
