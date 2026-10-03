@@ -112,3 +112,30 @@
     border-radius: 6px;
     cursor: pointer;
 }
+
+/* === إصلاح الوضع الليلي للمسابح === */
+.page.dark .pool-card,
+.dark .pool-card {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+.page.dark .pool-body h3,
+.dark .pool-body h3,
+.page.dark .pools-header h2,
+.dark .pools-header h2 {
+    color: #f1f5f9 !important;
+}
+
+.page.dark .pools-header p,
+.dark .pools-header p,
+.page.dark .loc,
+.dark .loc {
+    color: #9ca3af !important;
+}
+
+.page.dark .pool-body,
+.dark .pool-body {
+    background: #1e1e1e !important;
+}

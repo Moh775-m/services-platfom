@@ -275,93 +275,21 @@
   color: #8a8a8a;
 }
 
-
-.dark-mode {
-  background: #121212 !important;
-  color: #eee;
-}
-
-/* كل الهيدرات والكروت والبحث */
-.dark-mode div[class*="-header"],
-.dark-mode div[class*="-card"],
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-  background: #1e1e1e !important;
-  border-color: #333 !important;
-  color: #eee !important;
-}
-
-/* الفلاتر الحبوب */
-.dark-mode .chip,
-.dark-mode [class*="filter"] button,
-.dark-mode [class*="category"] {
-  background: #2a2a2a !important;
-  border-color: #333 !important;
-  color: #ccc !important;
-}
-
-.dark-mode .chip.active {
-  background: #e74c3c !important;
-  color: white !important;
-}
-
-
-.dark-mode p,
-.dark-mode span,
-.dark-mode .meta,
-.dark-mode [class*="desc"] {
-  color: #aaa !important;
-}
-
-.dark-mode h1,
-.dark-mode h2,
-.dark-mode h3 {
-  color: #fff !important;
-}
-
-.sticky-home-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #fbfaf9;
-  padding: 10px 0;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dark-mode .sticky-home-header {
-  background: rgba(18, 18, 18, 0.9) !important;
-  border-bottom-color: #222 !important;
-}
-
-.service-card.s5 {
-  background: linear-gradient(135deg, #98bcd4 0%, #dbeafe 100%) !important;
-  border: 1px solid #bfdbfe !important;
-}
-
-.page.dark .service-card.s5 {
-  background: #1e1e1e !important;
-  border-color: #333 !important;
-}
-.page.dark .service-card.s5 h3,
-.page.dark .service-card.s5 p {
-  color: #eee !important;
-}
-/* هيدر داخلي منسق جديد */
 .sticky-home-header-new {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid #eee;
   padding: 8px 16px;
 }
+
 .dark .sticky-home-header-new {
-  background: rgba(18,18,18,0.85);
+  background: rgba(18, 18, 18, 0.85);
   border-color: #222;
 }
+
 .sticky-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -369,6 +297,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .home-btn-new {
   background: #111;
   color: white;
@@ -380,7 +309,13 @@
   cursor: pointer;
   font-size: 13px;
 }
-.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .theme-btn-new {
   width: 36px;
   height: 36px;
@@ -389,4 +324,26 @@
   background: white;
   cursor: pointer;
 }
-.admin-badge { font-size: 11px; background: #f59e0b; color: white; padding: 4px 8px; border-radius: 999px; }
+
+.admin-badge {
+  font-size: 11px;
+  background: #f59e0b;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.service-card.s5 {
+  background: linear-gradient(135deg, #98bcd4 0%, #dbeafe 100%) !important;
+  border: 1px solid #bfdbfe !important;
+}
+
+.page.dark .service-card.s5 {
+  background: #1e1e1e !important;
+  border-color: #333 !important;
+}
+
+.page.dark .service-card.s5 h3,
+.page.dark .service-card.s5 p {
+  color: #eee !important;
+}

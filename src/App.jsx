@@ -6,6 +6,7 @@ import ProductsPage from './pages/ProductsPage.jsx'
 import JobsPage from './pages/JobsPage.jsx'
 import Pools from './pages/Pools.jsx'
 import AddPool from './pages/AddPool.jsx'
+import SarfHadhramout from './pages/SarfHadhramout.jsx'
 import './App.css'
 
 export default function App() {
@@ -88,6 +89,7 @@ export default function App() {
       {active === 'jobs' && <JobsPage isAdmin={isAdmin} dark={dark} />}
       {active === 'pools' && <Pools isAdmin={isAdmin} dark={dark} setActive={setActive} />}
       {active === 'pools-add' && <AddPool isAdmin={isAdmin} dark={dark} setActive={setActive} />}
+      {active === 'sarf' && <SarfHadhramout isAdmin={isAdmin} dark={dark} />}
     </div>
   )
 
@@ -110,7 +112,7 @@ export default function App() {
             {isAdmin? '👑 وضع الإدارة مفعل - اضغط للخروج' : '🛡️ منصة للخدمات في حضرموت '}
           </div>
           <h1>أحصل على حاجتك <br /><span>مع منصة جاهز</span><br />دعنا نسهّل شغلك</h1>
-          <p>معظم الخدمات  في مكان واحد - حرفيين، معدات، سكن ، متجر ، مسابح ، وظائف.</p>
+          <p>معظم الخدمات  في مكان واحد - حرفيين، معدات، سكن ، متجر ، مسابح ، وظائف،سعر الصرف.</p>
         </div>
 
         <div className="services">
@@ -120,6 +122,8 @@ export default function App() {
           <div className="service-card s4" onClick={() => setActive('products')}><div className="service-icon">🛒</div><h3>سوق حضرموت</h3><p>جوالات • سيارات • أثاث....</p></div>
           <div className="service-card s5" onClick={() => setActive('jobs')}><div className="service-icon">💼</div><h3>وظائف حضرموت</h3><p>وظائف • تقديم مباشر...</p></div>
           <div className="service-card s6" style={{background:'#e0f2fe'}} onClick={() => setActive('pools')}><div className="service-icon">🏊</div><h3>حجز المسابح</h3><p>مسابح • بالساعة • عائلية...</p></div>
+          {/* الجديد - صرف حضرموت */}
+          <div className="service-card" style={{background:'#fff7ed'}} onClick={() => setActive('sarf')}><div className="service-icon">💱</div><h3>صرف حضرموت</h3><p>سعودي • دولار • حاسبة...</p></div>
         </div>
       </div>
 

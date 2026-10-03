@@ -1,1 +1,85 @@
 @import "tailwindcss";
+/* === إصلاح الوضع الليلي النهائي - حطه في آخر index.css === */
+
+/* كروت الصفحة الرئيسية */
+.page.dark .s1, .dark .s1, 
+.page.dark .s2, .dark .s2,
+.page.dark .s3, .dark .s3,
+.page.dark .s4, .dark .s4,
+.page.dark .s5, .dark .s5,
+.page.dark .service-card, .dark .service-card {
+  background: #1e1e1e !important;
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+}
+
+.page.dark .service-card h3, .dark .service-card h3,
+.page.dark .service-card p, .dark .service-card p,
+.page.dark .service-icon, .dark .service-icon {
+  color: #eee !important;
+}
+.page.dark .service-icon, .dark .service-icon {
+  background: #2a2a2a !important;
+}
+
+/* كروت الصرف */
+.page.dark .sarf-card,
+.dark .sarf-card,
+.page.dark div[class*="sarf"],
+.dark div[class*="sarf"] {
+  background: #1e1e1e !important;
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+}
+.page.dark .sarf-card-green { background: #132e1f !important; }
+.page.dark .sarf-card-yellow { background: #2e2711 !important; }
+.page.dark .sarf-card-purple { background: #1e1a33 !important; }
+.page.dark .sarf-card-blue { background: #112233 !important; }
+
+.page.dark .sarf-card h3, .page.dark .sarf-price,
+.page.dark .sarf-header h1, .dark .sarf-card h3 {
+  color: #f1f5f9 !important;
+}
+.page.dark .sarf-subtitle, .page.dark .sarf-buy {
+  color: #9ca3af !important;
+}
+
+/* كروت المسابح */
+.page.dark .pool-card, .dark .pool-card {
+  background: #1e1e1e !important;
+  border-color: #333 !important;
+}
+.page.dark .pool-body h3, .dark .pool-body h3,
+.page.dark .pools-header h2, .dark .pools-header h2 {
+  color: #f1f5f9 !important;
+}
+.page.dark .pool-body, .dark .pool-body {
+  background: #1e1e1e !important;
+}
+.page.dark .loc, .dark .loc {
+  color: #9ca3af !important;
+}
+
+/* الحاسبة + SAR */
+.page.dark .calculator, .dark .calculator {
+  background: #1e1e1e !important;
+  border-color: #333 !important;
+}
+.page.dark .calc-row-3 input,
+.dark .calc-row-3 input,
+.page.dark .calc-row-3 select,
+.dark .calc-row-3 select {
+  background: #0f172a !important;
+  color: #fff !important;
+  border-color: #334155 !important;
+  width: 150px !important;
+  min-width: 150px !important;
+}
+.page.dark .calc-row-3 input {
+  width: 100% !important;
+  flex: 1 !important;
+}
+.page.dark .calc-result, .dark .calc-result {
+  background: #2a2a2a !important;
+  color: white !important;
+}
