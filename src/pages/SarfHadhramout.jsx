@@ -54,6 +54,8 @@ const SarfHadhramout = () => {
         return amount
     }
 
+    const result = convert()
+
     const saveRates = async () => {
         const { error } = await supabase
             .from('exchange_rates')
@@ -93,34 +95,35 @@ const SarfHadhramout = () => {
             </div>
 
             {/* حاسبة */}
-            <div className="sarf-card sarf-card-purple calculator">
-                <div className="sarf-icon-box">💱</div>
-                <h3>حول من وإلى</h3>
-                <div className="calc-row-3">
-                    <input
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        value={amount}
-                        onChange={e => {
-                            const val = e.target.value.replace(/[^0-9]/g, '');
-                            setAmount(val)
-                        }}
-                        placeholder="مثال: 100"
-                    />
-                    <select value={from} onChange={e => setFrom(e.target.value)}>
-                        <option value="SAR">SAR سعودي</option>
-                        <option value="YER">YER يمني</option>
-                        <option value="USD">USD دولار</option>
-                    </select>
-                    <span>إلى</span>
-                    <select value={to} onChange={e => setTo(e.target.value)}>
-                        <option value="YER">YER يمني</option>
-                        <option value="SAR">SAR سعودي</option>
-                        <option value="USD">USD دولار</option>
-                    </select>
+            <div className="calculator">
+                <div className="calc-converter">
+                    <div className="calc-input-top">
+                        <input
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            value={amount}
+                            onChange={e => {
+                                const val = e.target.value.replace(/[^0-9]/g, '')
+                                setAmount(val)
+                            }}
+                        />
+                    </div>
+                    <div className="calc-select-row">
+                        <select value={from} onChange={e => setFrom(e.target.value)}>
+                            <option value="SAR">SAR سعودي</option>
+                            <option value="YER">YER يمني</option>
+                            <option value="USD">USD دولار</option>
+                        </select>
+                        <span className="calc-to">إلى</span>
+                        <select value={to} onChange={e => setTo(e.target.value)}>
+                            <option value="YER">YER يمني</option>
+                            <option value="SAR">SAR سعودي</option>
+                            <option value="USD">USD دولار</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="calc-result">{amount} {from} = {Number(convert()).toLocaleString()} {to}</div>
+                <div className="calc-result">{result}</div>
             </div>
 
             {/* لوحة تحكم الـ Admin فقط */}
